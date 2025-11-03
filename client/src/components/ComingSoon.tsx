@@ -2,6 +2,7 @@ import { Newspaper, Bot, Sparkles } from 'lucide-react';
 import { SiTelegram } from 'react-icons/si';
 import DiamondBackground from './DiamondBackground';
 import BenefitCard from './BenefitCard';
+import FloatingEmojis from './FloatingEmojis';
 
 export default function ComingSoon() {
   return (
@@ -21,6 +22,7 @@ export default function ComingSoon() {
       />
 
       <DiamondBackground />
+      <FloatingEmojis />
 
       <div className="relative z-10 flex flex-col min-h-screen">
         <header className="py-8 px-8 animate-fade-in" style={{ animationDelay: '100ms' }}>
@@ -43,17 +45,17 @@ export default function ComingSoon() {
           </div>
         </header>
 
-        <main className="flex-1 flex items-center justify-center px-8 py-12">
-          <div className="max-w-5xl w-full space-y-16">
-            <div className="text-center space-y-6 animate-fade-in" style={{ animationDelay: '300ms' }}>
+        <main className="flex-1 flex items-center justify-center px-6 md:px-8 py-12">
+          <div className="max-w-5xl w-full space-y-12 md:space-y-16">
+            <div className="text-center space-y-4 md:space-y-6 animate-fade-in" style={{ animationDelay: '300ms' }}>
               <h2 
-                className="text-5xl md:text-7xl font-black text-white tracking-tight"
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tight px-4"
                 data-testid="text-main-heading"
               >
                 В РАЗРАБОТКЕ
               </h2>
               <p 
-                className="text-xl md:text-2xl text-white/90"
+                className="text-lg sm:text-xl md:text-2xl text-white/90 px-4"
                 data-testid="text-subheading"
               >
                 Мы ещё строим сайт
@@ -61,7 +63,7 @@ export default function ComingSoon() {
             </div>
 
             <div 
-              className="grid grid-cols-1 md:grid-cols-3 gap-8 animate-fade-in"
+              className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 px-4 animate-fade-in"
               style={{ animationDelay: '500ms' }}
             >
               <BenefitCard
@@ -86,14 +88,14 @@ export default function ComingSoon() {
           </div>
         </main>
 
-        <footer className="py-8 px-8 animate-fade-in" style={{ animationDelay: '900ms' }}>
-          <div className="max-w-7xl mx-auto space-y-6">
-            <div className="flex flex-wrap justify-center items-center gap-4">
+        <footer className="py-6 md:py-8 px-6 md:px-8 animate-fade-in" style={{ animationDelay: '900ms' }}>
+          <div className="max-w-7xl mx-auto space-y-4 md:space-y-6">
+            <div className="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-3 md:gap-4">
               <a
                 href="https://t.me/WIRALISCHANNEL"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg text-white hover-elevate transition-all duration-300"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg text-white hover-elevate transition-all duration-300"
                 data-testid="link-telegram-channel"
               >
                 <SiTelegram className="w-5 h-5" />
@@ -103,14 +105,14 @@ export default function ComingSoon() {
                 href="https://t.me/wiralis_bot"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg text-white hover-elevate transition-all duration-300"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg text-white hover-elevate transition-all duration-300"
                 data-testid="link-telegram-bot"
               >
                 <SiTelegram className="w-5 h-5" />
                 <span className="font-medium">Telegram-бот</span>
               </a>
             </div>
-            <p className="text-center text-white/60 text-sm" data-testid="text-copyright">
+            <p className="text-center text-white/60 text-sm px-4" data-testid="text-copyright">
               WIRALIS – Все права защищены
             </p>
           </div>
