@@ -1,7 +1,8 @@
-import { Newspaper, Bot, Sparkles } from 'lucide-react';
+import { Newspaper, Sparkles } from 'lucide-react';
 import { SiTelegram } from 'react-icons/si';
 import DiamondBackground from './DiamondBackground';
 import BenefitCard from './BenefitCard';
+import TelegramLoginCard from './TelegramLoginCard';
 import FloatingEmojis from './FloatingEmojis';
 
 export default function ComingSoon() {
@@ -72,12 +73,7 @@ export default function ComingSoon() {
                 description="Современный дизайн и удобный формат для ваших новостей"
                 delay={600}
               />
-              <BenefitCard
-                icon={Bot}
-                title="Вход через WIRALIS-бот"
-                description="Быстрая авторизация через Telegram без лишних действий"
-                delay={700}
-              />
+              <TelegramLoginCard delay={700} />
               <BenefitCard
                 icon={Sparkles}
                 title="И многое другое"
