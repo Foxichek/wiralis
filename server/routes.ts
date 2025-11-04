@@ -87,13 +87,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       // Ищем код в базе данных
-      const regCode = await db.query.registrationCodes.findFirst({
-        where: eq(registrationCodes.code, code.toUpperCase())
-      });
+      const regCodeResult = await db.select()
+        .from(registrationCodes)
+        .where(eq(registrationCodes.code, code.toUpperCase()))
+        .limit(1);
 
-      if (!regCode) {
+      if (!regCodeResult || regCodeResult.length === 0) {
         return res.status(404).json({ error: "Код не найден" });
       }
+
+      const regCode = regCodeResult[0];
 
       // Проверяем, не истек ли код
       if (new Date() > regCode.expiresAt) {
@@ -106,13 +109,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       // Получаем данные пользователя
-      const user = await db.query.wiralisUsers.findFirst({
-        where: eq(wiralisUsers.telegramId, regCode.telegramId)
-      });
+      const userResult = await db.select()
+        .from(wiralisUsers)
+        .where(eq(wiralisUsers.telegramId, regCode.telegramId))
+        .limit(1);
 
-      if (!user) {
+      if (!userResult || userResult.length === 0) {
         return res.status(404).json({ error: "Данные пользователя не найдены" });
       }
+
+      const user = userResult[0];
 
       // Помечаем код как использованный
       await db.update(registrationCodes)

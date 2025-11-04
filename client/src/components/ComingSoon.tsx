@@ -60,7 +60,7 @@ export default function ComingSoon() {
                 >
                   В РАЗРАБОТКЕ
                 </h2>
-                <div className="absolute left-1/2 -translate-x-1/2 top-full mt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-20 pointer-events-none">
+                <div className="absolute left-1/2 -translate-x-1/2 top-full mt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 translate-y-[-10px] transition-all duration-500 ease-out z-20 pointer-events-none">
                   <div 
                     className="px-6 py-4 backdrop-blur-xl border border-white/30 rounded-xl text-white shadow-2xl"
                     style={{
@@ -92,8 +92,8 @@ export default function ComingSoon() {
             >
               <BenefitCard
                 icon={Newspaper}
-                title="Красивые новостные посты"
-                description="Современный дизайн и удобный формат для ваших новостей"
+                title="Новости и Анонсы"
+                description="Будут публиковаться новости и анонсы обновлений платформы"
                 delay={600}
               />
               <BenefitCard
@@ -109,7 +109,7 @@ export default function ComingSoon() {
               <BenefitCard
                 icon={Sparkles}
                 title="И многое другое"
-                description="Ещё больше возможностей появится совсем скоро"
+                description="Профили дня, тренды, социальные возможности - все это скоро появится вне бота WIRALIS"
                 delay={800}
               />
             </div>

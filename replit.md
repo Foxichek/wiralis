@@ -24,8 +24,10 @@ The website integrates with a Telegram bot (@wiralis_bot) through the following 
 
 ### Environment Variables
 
-- `TELEGRAM_BOT_API_SECRET` - API key for bot authentication (default: US42982557)
-- `DATABASE_URL` - PostgreSQL database connection string
+**Important**: Keep `.env` file secure and never commit it to Git (already added to `.gitignore`)
+
+- `TELEGRAM_BOT_API_SECRET` - API key for bot authentication
+- `DATABASE_URL` - PostgreSQL database connection string (Neon serverless)
 
 ## User Preferences
 
@@ -169,3 +171,104 @@ Preferred communication style: Simple, everyday language.
 - Configured TELEGRAM_BOT_API_SECRET environment variable
 - Updated replit.md with integration documentation
 - Improved component reusability and type safety
+- Fixed database query error in `/api/verify-code` endpoint
+- Enhanced tooltip animation for smoother UX (500ms ease-out)
+- Updated card descriptions with more detailed features
+
+### Content Updates
+- Changed "Красивые новостные посты" to "Новости и Анонсы"
+- Enhanced "И многое другое" description with social features
+- Updated footer to "© 2025 WIRALIS Team – Все права защищены"
+
+## VPS Deployment Guide
+
+This application is designed to be VPS-compatible and can be deployed on any server with Node.js support.
+
+### Prerequisites
+
+- Node.js 18+ installed
+- PostgreSQL database (or Neon serverless)
+- PM2 or similar process manager (recommended)
+
+### Deployment Steps
+
+1. **Clone the repository**
+   ```bash
+   git clone <your-repo-url>
+   cd workspace
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Configure environment variables**
+   Create a `.env` file in the root directory:
+   ```env
+   DATABASE_URL=postgresql://username:password@host:port/database
+   TELEGRAM_BOT_API_SECRET=your_secret_key
+   NODE_ENV=production
+   ```
+
+4. **Run database migrations**
+   ```bash
+   npm run db:push
+   ```
+
+5. **Build the application**
+   ```bash
+   npm run build
+   ```
+
+6. **Start the server**
+   ```bash
+   # Development
+   npm run dev
+   
+   # Production (using PM2 recommended)
+   pm2 start npm --name "wiralis" -- run dev
+   pm2 save
+   pm2 startup
+   ```
+
+### Important Notes
+
+- Port 5000 is used by default (configurable via environment)
+- Application serves both frontend and backend on the same port
+- Ensure PostgreSQL database is accessible from your VPS
+- Keep `.env` file secure and never commit to Git
+- For production, consider using a reverse proxy (nginx/apache) with SSL
+
+### GitHub Repository
+
+To push to GitHub:
+
+1. **Initialize git** (if not already done)
+   ```bash
+   git init
+   ```
+
+2. **Add remote repository**
+   ```bash
+   git remote add origin https://github.com/yourusername/wiralis.git
+   ```
+
+3. **Commit and push**
+   ```bash
+   git add .
+   git commit -m "Initial commit"
+   git push -u origin main
+   ```
+
+4. **Make repository private** (recommended for security)
+   - Go to repository Settings → General → Danger Zone
+   - Click "Change visibility" → Select "Private"
+
+### Security Recommendations
+
+- Always use private repository for production code
+- Keep `.env` file in `.gitignore` (already configured)
+- Use strong, unique API keys and database credentials
+- Consider using environment variable management service for production
+- Regularly update dependencies for security patches

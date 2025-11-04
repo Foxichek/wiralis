@@ -187,7 +187,7 @@ export default function Register() {
 
         <footer className="py-6 px-6 text-center animate-fade-in" style={{ animationDelay: '500ms' }}>
           <p className="text-white/60 text-sm" data-testid="text-copyright">
-            WIRALIS – Все права защищены
+            © 2025 WIRALIS Team – Все права защищены
           </p>
         </footer>
       </div>
