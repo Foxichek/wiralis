@@ -1,37 +1,68 @@
-import { type User, type InsertUser } from "@shared/schema";
-import { randomUUID } from "crypto";
+import { type WiralisUser, type InsertWiralisUser, type RegistrationCode } from "@shared/schema";
 
-// modify the interface with any CRUD methods
-// you might need
-
+// Storage interface для работы с данными WIRALIS
 export interface IStorage {
-  getUser(id: string): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
+  // Управление пользователями
+  getWiralisUser(id: string): Promise<WiralisUser | undefined>;
+  getWiralisUserByTelegramId(telegramId: number): Promise<WiralisUser | undefined>;
+  createWiralisUser(user: InsertWiralisUser): Promise<WiralisUser>;
+  
+  // Управление кодами регистрации
+  getRegistrationCode(code: string): Promise<RegistrationCode | undefined>;
+  createRegistrationCode(registrationCode: RegistrationCode): Promise<RegistrationCode>;
+  markCodeAsUsed(code: string): Promise<void>;
 }
 
 export class MemStorage implements IStorage {
-  private users: Map<string, User>;
+  private wiralisUsers: Map<string, WiralisUser>;
+  private registrationCodes: Map<string, RegistrationCode>;
 
   constructor() {
-    this.users = new Map();
+    this.wiralisUsers = new Map();
+    this.registrationCodes = new Map();
   }
 
-  async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
+  async getWiralisUser(id: string): Promise<WiralisUser | undefined> {
+    return this.wiralisUsers.get(id);
   }
 
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
+  async getWiralisUserByTelegramId(telegramId: number): Promise<WiralisUser | undefined> {
+    return Array.from(this.wiralisUsers.values()).find(
+      (user) => user.telegramId === telegramId,
     );
   }
 
-  async createUser(insertUser: InsertUser): Promise<User> {
-    const id = randomUUID();
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
+  async createWiralisUser(insertUser: InsertWiralisUser): Promise<WiralisUser> {
+    const id = Math.random().toString(36).substring(2, 15);
+    const user: WiralisUser = { 
+      id,
+      telegramId: insertUser.telegramId,
+      nickname: insertUser.nickname,
+      username: insertUser.username ?? null,
+      quote: insertUser.quote ?? null,
+      botId: insertUser.botId ?? null,
+      registeredAt: new Date()
+    };
+    this.wiralisUsers.set(id, user);
     return user;
+  }
+
+  async getRegistrationCode(code: string): Promise<RegistrationCode | undefined> {
+    return this.registrationCodes.get(code);
+  }
+
+  async createRegistrationCode(registrationCode: RegistrationCode): Promise<RegistrationCode> {
+    this.registrationCodes.set(registrationCode.code, registrationCode);
+    return registrationCode;
+  }
+
+  async markCodeAsUsed(code: string): Promise<void> {
+    const regCode = this.registrationCodes.get(code);
+    if (regCode) {
+      regCode.isUsed = true;
+      regCode.usedAt = new Date();
+      this.registrationCodes.set(code, regCode);
+    }
   }
 }
 

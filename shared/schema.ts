@@ -1,7 +1,8 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, timestamp, bigint, boolean, integer } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, timestamp, bigint, boolean } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
+import { relations } from "drizzle-orm";
 
 // Коды регистрации для связи сайта и бота
 export const registrationCodes = pgTable("registration_codes", {
@@ -23,6 +24,18 @@ export const wiralisUsers = pgTable("wiralis_users", {
   botId: varchar("bot_id", { length: 4 }),
   registeredAt: timestamp("registered_at").notNull().default(sql`now()`),
 });
+
+// Определяем связи
+export const wiralisUsersRelations = relations(wiralisUsers, ({ many }) => ({
+  registrationCodes: many(registrationCodes),
+}));
+
+export const registrationCodesRelations = relations(registrationCodes, ({ one }) => ({
+  user: one(wiralisUsers, {
+    fields: [registrationCodes.telegramId],
+    references: [wiralisUsers.telegramId],
+  }),
+}));
 
 // Схемы для валидации
 export const insertRegistrationCodeSchema = createInsertSchema(registrationCodes).pick({
