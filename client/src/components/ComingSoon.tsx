@@ -1,12 +1,14 @@
-import { Newspaper, Sparkles, LogIn } from 'lucide-react';
+import { Newspaper, Sparkles, LogIn, HelpCircle } from 'lucide-react';
 import { SiTelegram } from 'react-icons/si';
 import { useLocation } from 'wouter';
+import { useState } from 'react';
 import DiamondBackground from './DiamondBackground';
 import BenefitCard from './BenefitCard';
 import FloatingEmojis from './FloatingEmojis';
 
 export default function ComingSoon() {
   const [, setLocation] = useLocation();
+  const [showHowModal, setShowHowModal] = useState(false);
   
   return (
     <div className="min-h-screen relative overflow-hidden bg-gradient-to-br from-purple-900 via-purple-800 to-purple-900">
@@ -51,12 +53,31 @@ export default function ComingSoon() {
         <main className="flex-1 flex items-center justify-center px-6 md:px-8 py-12">
           <div className="max-w-5xl w-full space-y-12 md:space-y-16">
             <div className="text-center space-y-4 md:space-y-6 animate-fade-in" style={{ animationDelay: '300ms' }}>
-              <h2 
-                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tight px-4"
-                data-testid="text-main-heading"
-              >
-                В РАЗРАБОТКЕ
-              </h2>
+              <div className="relative inline-block group">
+                <h2 
+                  className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-white tracking-tight px-4 cursor-help"
+                  data-testid="text-main-heading"
+                >
+                  В РАЗРАБОТКЕ
+                </h2>
+                <div className="absolute left-1/2 -translate-x-1/2 top-full mt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-20 pointer-events-none">
+                  <div 
+                    className="px-6 py-4 backdrop-blur-xl border border-white/30 rounded-xl text-white shadow-2xl"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.1) 100%)',
+                      boxShadow: '0 8px 32px rgba(139, 92, 246, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
+                      minWidth: '280px',
+                      maxWidth: '400px',
+                    }}
+                  >
+                    <p className="text-sm md:text-base font-medium text-center">
+                      🎉 Публичная версия выйдет<br />
+                      <span className="text-green-400 font-bold">в декабре 2025</span> или<br />
+                      <span className="text-green-400 font-bold">в начале 2026 года</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
               <p 
                 className="text-lg sm:text-xl md:text-2xl text-white/90 px-4"
                 data-testid="text-subheading"
@@ -81,6 +102,9 @@ export default function ComingSoon() {
                 description="Войдите через код из бота и получите доступ к вашему профилю"
                 delay={700}
                 onClick={() => setLocation('/register')}
+                onSecondaryClick={() => setShowHowModal(true)}
+                secondaryIcon={HelpCircle}
+                secondaryTooltip="Как это работает?"
               />
               <BenefitCard
                 icon={Sparkles}
@@ -125,11 +149,120 @@ export default function ComingSoon() {
               </a>
             </div>
             <p className="text-center text-white/60 text-sm px-4" data-testid="text-copyright">
-              WIRALIS – Все права защищены
+              © 2025 WIRALIS Team – Все права защищены
             </p>
           </div>
         </footer>
       </div>
+
+      {/* Модальное окно "Как это работает?" */}
+      {showHowModal && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in"
+          onClick={() => setShowHowModal(false)}
+          style={{
+            background: 'rgba(0, 0, 0, 0.7)',
+            backdropFilter: 'blur(8px)',
+          }}
+        >
+          <div 
+            className="max-w-2xl w-full backdrop-blur-xl border border-white/30 rounded-2xl p-8 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.25) 0%, rgba(139, 92, 246, 0.15) 100%)',
+              boxShadow: '0 20px 60px rgba(139, 92, 246, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)',
+            }}
+          >
+            <div className="flex justify-between items-start mb-6">
+              <h3 className="text-2xl md:text-3xl font-bold text-white">
+                🤔 Как это работает?
+              </h3>
+              <button
+                onClick={() => setShowHowModal(false)}
+                className="text-white/70 hover:text-white transition-colors text-2xl leading-none"
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="space-y-6 text-white/90">
+              <div className="space-y-4">
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-green-500/20 border border-green-500/50 flex items-center justify-center text-green-400 font-bold">
+                    1
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-white mb-1">Откройте Telegram-бот</h4>
+                    <p className="text-sm text-white/80">
+                      Перейдите в <a href="https://t.me/wiralis_bot" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:text-green-300 underline">@wiralis_bot</a> и отправьте команду <code className="px-2 py-1 bg-white/10 rounded">/web</code>
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-green-500/20 border border-green-500/50 flex items-center justify-center text-green-400 font-bold">
+                    2
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-white mb-1">Получите код доступа</h4>
+                    <p className="text-sm text-white/80">
+                      Бот сгенерирует уникальный 6-значный код, который действителен 10 минут
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-green-500/20 border border-green-500/50 flex items-center justify-center text-green-400 font-bold">
+                    3
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-white mb-1">Введите код на сайте</h4>
+                    <p className="text-sm text-white/80">
+                      Нажмите кнопку "Жду Сайт" и введите полученный код
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex gap-4">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-green-500/20 border border-green-500/50 flex items-center justify-center text-green-400 font-bold">
+                    4
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-white mb-1">Готово!</h4>
+                    <p className="text-sm text-white/80">
+                      Получите доступ к вашему профилю и всем возможностям платформы
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div 
+                className="mt-6 p-4 rounded-xl border border-purple-400/30"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.15) 0%, rgba(168, 85, 247, 0.05) 100%)',
+                }}
+              >
+                <p className="text-sm text-white/90">
+                  💡 <strong>Подсказка:</strong> Код можно использовать только один раз. Если он истек, просто запросите новый командой <code className="px-2 py-1 bg-white/10 rounded">/web</code>
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-8 flex justify-center">
+              <button
+                onClick={() => setShowHowModal(false)}
+                className="px-8 py-3 backdrop-blur-xl border border-white/30 rounded-lg text-white font-medium hover-elevate transition-all duration-300"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(132, 204, 22, 0.25) 0%, rgba(34, 197, 94, 0.25) 100%)',
+                  boxShadow: '0 4px 16px rgba(132, 204, 22, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15)',
+                }}
+              >
+                Понятно
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

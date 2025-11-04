@@ -4,7 +4,28 @@
 
 This is a coming soon/placeholder page for WIRALIS, a cryptocurrency-focused platform currently under development. The application features a single-page design showcasing the brand's modern, energetic identity through vibrant purple and green gradients with diagonal stripe patterns. The page highlights upcoming features including beautiful news posts, WIRALIS-bot login integration, and other platform capabilities.
 
-The application is built as a full-stack TypeScript project with a React frontend and Express backend, though the current implementation focuses primarily on the static coming soon page presentation.
+The application is built as a full-stack TypeScript project with a React frontend and Express backend. It integrates with a Telegram bot through API endpoints for user authentication and registration.
+
+## Telegram Bot Integration
+
+The website integrates with a Telegram bot (@wiralis_bot) through the following workflow:
+
+1. **User requests access**: User sends `/web` command in Telegram bot
+2. **Code generation**: Bot calls `/api/bot/generate-code` endpoint with user data
+3. **User authentication**: User enters 6-digit code on website via `/register` page
+4. **Verification**: Website calls `/api/verify-code` to authenticate user
+5. **Profile access**: User gains access to their profile and platform features
+
+### API Endpoints
+
+- `POST /api/bot/generate-code` - Bot endpoint to generate authentication codes (requires API key)
+- `POST /api/verify-code` - Website endpoint to verify user codes
+- `GET /api/profile/:userId` - Retrieve user profile data
+
+### Environment Variables
+
+- `TELEGRAM_BOT_API_SECRET` - API key for bot authentication (default: US42982557)
+- `DATABASE_URL` - PostgreSQL database connection string
 
 ## User Preferences
 
@@ -78,6 +99,14 @@ Preferred communication style: Simple, everyday language.
 - Rotating diamond background
 - Floating emoji elements
 - Hover elevation effects
+- Glass-morphism scrollbar with smooth transitions
+
+**Custom Scrollbar**: Glass-style scrollbar featuring:
+- Purple gradient with transparency
+- Smooth hover and active states
+- Backdrop blur effect
+- Border highlights for depth
+- Cross-browser support (WebKit and Firefox)
 
 ## External Dependencies
 
@@ -120,3 +149,23 @@ Preferred communication style: Simple, everyday language.
 
 ### Session Management
 - **connect-pg-simple**: PostgreSQL session store (configured but not actively used)
+
+## Recent Changes (November 4, 2025)
+
+### Bot Integration
+- Added API endpoints for Telegram bot integration
+- Implemented authentication code generation and verification
+- Added user data storage for bot users
+- Created database schema for registration codes and WIRALIS users
+
+### UI/UX Improvements
+- Added interactive "How it works?" modal explaining bot integration
+- Implemented tooltip on "В РАЗРАБОТКЕ" showing release timeline (December 2025 / Early 2026)
+- Added custom glass-morphism scrollbar matching brand aesthetic
+- Updated footer with copyright © 2025 WIRALIS Team
+- Enhanced BenefitCard component with secondary action support
+
+### Technical Updates
+- Configured TELEGRAM_BOT_API_SECRET environment variable
+- Updated replit.md with integration documentation
+- Improved component reusability and type safety

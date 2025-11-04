@@ -7,9 +7,12 @@ interface BenefitCardProps {
   description: string;
   delay?: number;
   onClick?: () => void;
+  onSecondaryClick?: () => void;
+  secondaryIcon?: LucideIcon;
+  secondaryTooltip?: string;
 }
 
-export default function BenefitCard({ icon: Icon, title, description, delay = 0, onClick }: BenefitCardProps) {
+export default function BenefitCard({ icon: Icon, title, description, delay = 0, onClick, onSecondaryClick, secondaryIcon: SecondaryIcon, secondaryTooltip }: BenefitCardProps) {
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -62,6 +65,19 @@ export default function BenefitCard({ icon: Icon, title, description, delay = 0,
         <p className="text-white/70 text-sm leading-relaxed">
           {description}
         </p>
+        {onSecondaryClick && SecondaryIcon && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              onSecondaryClick();
+            }}
+            className="mt-2 group relative inline-flex items-center gap-2 px-4 py-2 text-sm text-white/80 hover:text-white transition-all duration-300 rounded-lg hover:bg-white/10"
+            title={secondaryTooltip}
+          >
+            <SecondaryIcon className="w-4 h-4" />
+            <span>{secondaryTooltip || 'Узнать больше'}</span>
+          </button>
+        )}
       </div>
     </div>
   );
