@@ -40,9 +40,20 @@ export async function setupVite(app: Express, server: Server) {
     appType: "custom",
   });
 
-  app.use(vite.middlewares);
+  // Use vite middleware but exclude API routes
+  app.use((req, res, next) => {
+    if (req.path.startsWith('/api')) {
+      return next();
+    }
+    return vite.middlewares(req, res, next);
+  });
   app.use("*", async (req, res, next) => {
     const url = req.originalUrl;
+
+    // Skip API routes - let them be handled by API middleware
+    if (url.startsWith('/api')) {
+      return next();
+    }
 
     try {
       const clientTemplate = path.resolve(
@@ -79,7 +90,11 @@ export function serveStatic(app: Express) {
   app.use(express.static(distPath));
 
   // fall through to index.html if the file doesn't exist
-  app.use("*", (_req, res) => {
+  app.use("*", (req, res) => {
+    // Skip API routes - let them be handled by API middleware
+    if (req.originalUrl.startsWith('/api')) {
+      return res.status(404).json({ error: "API endpoint not found" });
+    }
     res.sendFile(path.resolve(distPath, "index.html"));
   });
 }
