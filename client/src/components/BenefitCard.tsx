@@ -36,19 +36,19 @@ export default function BenefitCard({ icon: Icon, title, description, delay = 0,
 
   return (
     <div
-      className={`bg-white/10 backdrop-blur-xl border border-white/30 rounded-xl p-5 md:p-6 transition-all duration-300 ${
+      className={`backdrop-blur-2xl border border-white/20 rounded-2xl p-5 md:p-6 transition-all duration-300 ${
         onClick ? 'cursor-pointer hover-elevate' : 'hover-elevate'
       }`}
       style={{ 
         animationDelay: `${delay}ms`,
         transform: onClick ? `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${tilt.x || tilt.y ? 1.02 : 1})` : `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
         boxShadow: `
-          0 8px 32px rgba(139, 92, 246, 0.15),
-          0 4px 16px rgba(0, 0, 0, 0.1),
-          inset 0 1px 0 rgba(255, 255, 255, 0.15),
-          inset 0 -1px 0 rgba(0, 0, 0, 0.1)
+          0 8px 32px rgba(139, 92, 246, 0.2),
+          0 4px 16px rgba(0, 0, 0, 0.15),
+          inset 0 1px 0 rgba(255, 255, 255, 0.1),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.15)
         `,
-        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.08) 100%)',
+        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%)',
       }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
