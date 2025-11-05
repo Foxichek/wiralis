@@ -22,6 +22,10 @@ export const wiralisUsers = pgTable("wiralis_users", {
   username: text("username"),
   quote: text("quote"),
   botId: varchar("bot_id", { length: 4 }),
+  role: text("role").default("user"),
+  activeBadgeEmoji: text("active_badge_emoji"),
+  activeBadgeName: text("active_badge_name"),
+  activeThemeName: text("active_theme_name"),
   registeredAt: timestamp("registered_at").notNull().default(sql`now()`),
 });
 

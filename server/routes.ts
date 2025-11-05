@@ -45,6 +45,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }).returning();
 
       // Сохраняем или обновляем данные пользователя для будущего импорта
+      const { role, activeBadgeEmoji, activeBadgeName, activeThemeName } = req.body;
+      
       const existingUser = await db.query.wiralisUsers.findFirst({
         where: eq(wiralisUsers.telegramId, telegramId)
       });
@@ -52,7 +54,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (existingUser) {
         // Обновляем существующие данные
         await db.update(wiralisUsers)
-          .set({ nickname, username, quote, botId })
+          .set({ 
+            nickname, 
+            username, 
+            quote, 
+            botId,
+            role: role || existingUser.role,
+            activeBadgeEmoji: activeBadgeEmoji || existingUser.activeBadgeEmoji,
+            activeBadgeName: activeBadgeName || existingUser.activeBadgeName,
+            activeThemeName: activeThemeName || existingUser.activeThemeName,
+          })
           .where(eq(wiralisUsers.telegramId, telegramId));
       } else {
         // Создаем новую запись
@@ -62,6 +73,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
           username: username || null,
           quote: quote || null,
           botId: botId || null,
+          role: role || "user",
+          activeBadgeEmoji: activeBadgeEmoji || null,
+          activeBadgeName: activeBadgeName || null,
+          activeThemeName: activeThemeName || null,
         });
       }
 
@@ -135,6 +150,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
           username: user.username,
           quote: user.quote,
           botId: user.botId,
+          role: user.role,
+          activeBadgeEmoji: user.activeBadgeEmoji,
+          activeBadgeName: user.activeBadgeName,
+          activeThemeName: user.activeThemeName,
         }
       });
 
@@ -159,15 +178,42 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       res.json({
         id: user.id,
+        telegramId: user.telegramId,
         nickname: user.nickname,
         username: user.username,
         quote: user.quote,
         botId: user.botId,
+        role: user.role,
+        activeBadgeEmoji: user.activeBadgeEmoji,
+        activeBadgeName: user.activeBadgeName,
+        activeThemeName: user.activeThemeName,
         registeredAt: user.registeredAt,
       });
 
     } catch (error: any) {
       console.error("Ошибка при получении профиля:", error);
+      res.status(500).json({ error: "Ошибка сервера" });
+    }
+  });
+
+  // API для отправки "поднадчивания" в бот
+  app.post("/api/nudge", verifyBotApiKey, async (req, res) => {
+    try {
+      const { telegramId } = req.body;
+
+      if (!telegramId) {
+        return res.status(400).json({ error: "telegramId обязателен" });
+      }
+
+      // Здесь бот получит запрос и отправит сообщение пользователю
+      // Логика обрабатывается на стороне бота
+      res.json({ 
+        success: true,
+        message: "Сообщение отправлено пользователю" 
+      });
+
+    } catch (error: any) {
+      console.error("Ошибка при отправке поднадчивания:", error);
       res.status(500).json({ error: "Ошибка сервера" });
     }
   });
